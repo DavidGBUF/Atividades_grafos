@@ -35,7 +35,7 @@ class Grafo():
                 
                 if not direcionado:
                     self.arestas[aresta] = valor
-                    self.arestas[aresta.reverse()] = valor
+                    self.arestas[aresta[::-1]] = valor
                 else:
                     self.arestas[aresta] = valor
 
