@@ -1,5 +1,7 @@
+import numpy as np
 class Grafo():
-    def __init__(self, vertices:list, arestas):
+    def __init__(self, vertices:list, arestas, direcionado=True):
+        self.direcuionado = True
         for v in vertices:
             if not isinstance(v, (str,int)):
                 raise ValueError("Os labels dos vertices devem ser inteiros ou strings")
@@ -14,7 +16,10 @@ class Grafo():
                 u,v = a
                 if u not in vertices or v not in vertices:
                     raise ValueError(f"aresta {a} contém vértices não existentes")
-                self.arestas.append((u,v))
+                if not direcionado:
+                    self.arestas.extend([(u,v),(v,u)])
+                else:
+                    self.arestas.append((u,v))
         
         elif isinstance(arestas, dict):
             self.arestas = {}
@@ -27,7 +32,12 @@ class Grafo():
                     raise ValueError(f"aresta {a} contém vértices não existentes")
                 if not isinstance(valor, (int, float)):
                     raise ValueError("Pesos das arestas devem ser numéricos")
-                self.arestas[aresta] = valor
+                
+                if not direcionado:
+                    self.arestas[aresta] = valor
+                    self.arestas[aresta.reverse()] = valor
+                else:
+                    self.arestas[aresta] = valor
 
         else:
             raise ValueError("arestas devem ser list ou dict")
@@ -127,9 +137,34 @@ class Grafo():
             for i2,v2 in enumerate(self.vertices):
                 if (v1,v2) in self.arestas:
                     matriz[i1][i2]=1
-
-
         return matriz
+
+    def conexo_por_mm(self, m=None, ignorar_indices=None):
+        tam = len(self.vertices)
+        R = np.zeros((tam, tam), dtype=int)
+        
+        if m is None:
+            m = self.matriz_de_adjacencias()
+        
+        if ignorar_indices is None:
+            ignorar_indices = []
+
+        for i in range(1, tam + 1):
+            R += np.linalg.matrix_power(m, i)
+
+        np.fill_diagonal(R, 1)
+
+        # Marca como "conectado" os vértices ignorados entre si (e com os outros)
+        for i in ignorar_indices:
+            for j in range(tam):
+                R[i][j] = 1
+                R[j][i] = 1
+
+        return np.all(R > 0)
+
+
+
+
 
 if __name__ == "__main__":
 
@@ -164,3 +199,8 @@ if __name__ == "__main__":
     for linha in grafo2.matriz_de_adjacencias():
         print(linha)
     print()
+
+
+#R = np.zeros_like(shape=len(self.vertices))
+# print(np.zeros((5,5), dtype=int))
+
