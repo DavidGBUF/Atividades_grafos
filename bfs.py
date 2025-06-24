@@ -1,3 +1,4 @@
+import time
 from grafo_utils import Grafo
 
 def bfs(G: Grafo, no_fonte):
@@ -46,9 +47,10 @@ def bfs(G: Grafo, no_fonte):
 
 
 
-
+i=time.time()
 grafo = Grafo(vertices=[1,2,3,4,5,6,7,8], arestas=[(1,2),(1,8),(1,7),(1,6),(2,8),(8,7), (6,7) ,(6,3),(3,4), (4,5)], direcionado=False)
 bfs(grafo, 7)
+print(f"tempo em ms: ",(time.time()-i)*1000)
 
 
 

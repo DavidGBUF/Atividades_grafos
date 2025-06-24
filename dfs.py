@@ -36,6 +36,19 @@ def dfs_visit(G: Grafo,v, cor, pi, time, d, f):
         if cor[v_adj] == 'BRANCO':
             pi[v_adj] = v
             dfs_visit(G, v_adj, cor, pi, time, d, f)
+        
+        elif cor[v_adj] == 'CINZA':  # Se o vértice adjacente está na pilha (ciclo detectado)
+            print(f"Ciclo detectado: {v} -> {v_adj}")
+            # Aqui, vamos reconstruir o ciclo
+            ciclo = []
+            temp = v
+            while temp != v_adj:
+                ciclo.append(temp)
+                temp = pi[temp]
+            ciclo.append(v_adj)  # Adiciona o nó de onde o ciclo começou
+            ciclo.append(v)
+            ciclo.reverse()  # Inverte para mostrar o ciclo na ordem correta
+            print(f"Ciclo: {' -> '.join(map(str, ciclo))}")
 
     cor[v] = 'PRETO'
     print(f"Cor[{v}] = {cor[v]}")
