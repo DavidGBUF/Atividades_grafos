@@ -1,19 +1,15 @@
 from grafo_utils import Grafo
 
 def bellman_ford(grafo: Grafo, origem):
-    # Inicialização
     dist = {v: float("inf") for v in grafo.vertices}
     pai = {v: None for v in grafo.vertices}
     dist[origem] = 0
 
-    # Converte as arestas em lista de (u, v, w)
     if grafo.ponderado:
         arestas = [(u, v, w) for (u, v), w in grafo.arestas.items()]
     else:
-        # se não for ponderado, atribui peso 1 por padrão
         arestas = [(u, v, 1) for (u, v) in grafo.arestas]
 
-    # Relaxamento repetido |V|-1 vezes
     for _ in range(len(grafo.vertices) - 1):
         atualizado = False
         for (u, v, w) in arestas:
@@ -24,7 +20,6 @@ def bellman_ford(grafo: Grafo, origem):
         if not atualizado:
             break
 
-    # Verificação de ciclos de peso negativo
     for (u, v, w) in arestas:
         if dist[u] + w < dist[v]:
             raise ValueError("Ciclo de peso negativo detectado!")
@@ -32,7 +27,6 @@ def bellman_ford(grafo: Grafo, origem):
     return dist, pai
 
 
-# ---- Exemplo de uso ----
 g = Grafo(
     vertices=["A", "B", "C", "D", "E"],
     arestas=[
