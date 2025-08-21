@@ -108,28 +108,28 @@ class Grafo:
         print("])")
 
     # -------------------- utilitários internos --------------------
-    # def _iter_arcos(self):
-    #     """
-    #     Itera sobre arestas como (u, v) (independente de ponderação).
-    #     """
-    #     if not self.ponderado:
-    #         for (u, v) in self.arestas:
-    #             yield (u, v)
-    #     else:
-    #         for (u, v) in self.arestas.keys():
-    #             yield (u, v)
+    def _iter_arcos(self):
+        """
+        Itera sobre arestas como (u, v) (independente de ponderação).
+        """
+        if not self.ponderado:
+            for (u, v) in self.arestas:
+                yield (u, v)
+        else:
+            for (u, v) in self.arestas.keys():
+                yield (u, v)
 
-    # def _iter_arcos_pesos(self):
-    #     """
-    #     Itera sobre arestas como (u, v, w).
-    #     Para não ponderado, retorna w = 1 por convenção.
-    #     """
-    #     if not self.ponderado:
-    #         for (u, v) in self.arestas:
-    #             yield (u, v, 1)
-    #     else:
-    #         for (u, v), w in self.arestas.items():
-    #             yield (u, v, w)
+    def _iter_arcos_pesos(self):
+        """
+        Itera sobre arestas como (u, v, w).
+        Para não ponderado, retorna w = 1 por convenção.
+        """
+        if not self.ponderado:
+            for (u, v) in self.arestas:
+                yield (u, v, 1)
+        else:
+            for (u, v), w in self.arestas.items():
+                yield (u, v, w)
 
     # -------------------- graus --------------------
     def grau_entrada_dos_vertices(self):
@@ -271,32 +271,35 @@ class Grafo:
 # -------------------- Testes rápidos --------------------
 if __name__ == "__main__":
     # Teste 1 – Grafo direcionado NÃO ponderado
-    print("Teste 1: Grafo direcionado simples (não ponderado)")
-    grafo1 = Grafo(vertices=[1, 2, 3], arestas=[(1, 2), (2, 3)], direcionado=True, ponderado=False)
-    grafo1.printar_grafo()
-    print("Grau de entrada:", grafo1.grau_entrada_dos_vertices())
-    print("Grau de saída:", grafo1.grau_saida_dos_vertices())
-    print("Graus do vértice 2:", grafo1.graus_de_um_vertice(2))
-    print("Lista de adjacência:", grafo1.lista_adjacencias())
-    print("Matriz de adjacência:")
-    for linha in grafo1.matriz_de_adjacencias():
-        print(linha)
-    print("Vértice 3 é isolado?", grafo1.vertice_isolado(3))
-    print()
+    # print("Teste 1: Grafo direcionado simples (não ponderado)")
+    # grafo1 = Grafo(vertices=[1, 2, 3], arestas=[(1, 2), (2, 3)], direcionado=True, ponderado=False)
+    # grafo1.printar_grafo()
+    # print("Grau de entrada:", grafo1.grau_entrada_dos_vertices())
+    # print("Grau de saída:", grafo1.grau_saida_dos_vertices())
+    # print("Graus do vértice 2:", grafo1.graus_de_um_vertice(2))
+    # print("Lista de adjacência:", grafo1.lista_adjacencias())
+    # print("Matriz de adjacência:")
+    # for linha in grafo1.matriz_de_adjacencias():
+    #     print(linha)
+    # print("Vértice 3 é isolado?", grafo1.vertice_isolado(3))
+    # print()
+    # print("Aqui!!! ",grafo1.arestas)
 
-    # Teste 2 – Adição de vértice e aresta (não ponderado)
-    print("Teste 2: Adicionando vértice e aresta")
-    grafo1.adicionar_vertice(4)
-    grafo1.adicionar_aresta(3, 4)
-    grafo1.printar_grafo()
-    print("Lista de adjacência atualizada:", grafo1.lista_adjacencias())
-    print()
+    # # Teste 2 – Adição de vértice e aresta (não ponderado)
+    # print("Teste 2: Adicionando vértice e aresta")
+    # grafo1.adicionar_vertice(4)
+    # grafo1.adicionar_aresta(3, 4)
+    # grafo1.printar_grafo()
+    # print("Lista de adjacência atualizada:", grafo1.lista_adjacencias())
+    # print()
 
     # Teste 3 – Grafo PONDERADO (direcionado)
     print("Teste 3: Grafo ponderado (dict)")
     grafo2 = Grafo(vertices=['A', 'B', 'C'],
                    arestas={('A', 'B'): 5, ('B', 'C'): -2},
                    direcionado=True, ponderado=True)
+    
+    print("aquiii !!! ", grafo2.arestas)
     grafo2.printar_grafo()
     print("Verificar aresta ('A', 'B'):", grafo2.verificar_aresta(('A', 'B')))
     print("Verificar aresta ('A', 'B', 5):", grafo2.verificar_aresta(('A', 'B', 5)))
@@ -306,14 +309,16 @@ if __name__ == "__main__":
         print(linha)
     print()
 
-    # Teste 4 – Grafo PONDERADO a partir de lista [(u,v,w)]
-    print("Teste 4: Grafo ponderado (lista)")
-    grafo3 = Grafo(vertices=[1, 2, 3],
-                   arestas=[(1, 2, 1.5), (2, 3, 0.7)],
-                   direcionado=False, ponderado=True)
-    grafo3.printar_grafo()
-    grafo3.adicionar_aresta(1, 3, peso=2.0)
-    print("Adjacências ponderadas:", grafo3.lista_adjacencias(ponderada=True))
-    print("Matriz ponderada:")
-    for linha in grafo3.matriz_de_adjacencias(ponderada=True, default=0):
-        print(linha)
+    # # Teste 4 – Grafo PONDERADO a partir de lista [(u,v,w)]
+    # print("Teste 4: Grafo ponderado (lista)")
+    # grafo3 = Grafo(vertices=[1, 2, 3],
+    #                arestas=[(1, 2, 1.5), (2, 3, 0.7)],
+    #                direcionado=False, ponderado=True)
+    # grafo3.printar_grafo()
+    # grafo3.adicionar_aresta(1, 3, peso=2.0)
+    # print("Adjacências ponderadas:", grafo3.lista_adjacencias(ponderada=True))
+    # print("Matriz ponderada:")
+    # for linha in grafo3.matriz_de_adjacencias(ponderada=True, default=0):
+    #     print(linha)
+
+    
